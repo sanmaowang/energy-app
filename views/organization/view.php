@@ -15,8 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('app', '编辑'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', '编辑成员国'), ['countryorg/create', 'oid' => $model->id], ['class' => 'btn btn-info'])?>
+        <?= Html::a(Yii::t('app', '删除'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -48,5 +49,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
+    
+    <h2>成员国</h2>
+    <?php if(count($model->countries) > 0){?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>国家</th>
+            </tr>
+        </thead>
+    <?php foreach ($model->countries as $key => $c) {?>
+        <tr>
+            <td><?= $c->name;?></td>
+        </tr>
+    <?php }?>
+    </table>
+    <?php }?>
 
 </div>
