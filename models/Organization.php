@@ -45,8 +45,7 @@ class Organization extends \yii\db\ActiveRecord
     {
         return [
             [['create_date', 'created_at', 'updated_at'], 'safe'],
-            [['create_country'], 'integer'],
-            [['description', 'english_description'], 'string'],
+            [['description','create_country', 'english_description'], 'string'],
             [['total_quantity_consumed', 'total_energy_consumed', 'petroleum_reserves', 'carbon_emission', 'renewable_energy', 'gdp', 'population', 'per_energy_consumed', 'per_carbon_emission'], 'number'],
             [['name', 'english_name'], 'string', 'max' => 255]
         ];
