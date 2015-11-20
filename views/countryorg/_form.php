@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\CountryOrgRel */
 /* @var $form yii\widgets\ActiveForm */
@@ -33,3 +33,20 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+$this->registerCssFile(Yii::$app->request->baseUrl.'/css/bootstrap-datepicker.min.css', [], 'css-datepicker');
+$this->registerJsFile(Yii::$app->request->baseUrl.'/js/bootstrap-datepicker.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJs("
+$(function(){
+  $('#countryorgrel-join_time').datepicker({
+    format: 'yyyy-mm-dd',
+    startDate: '-3d'
+	});
+	$('#countryorgrel-exit_time').datepicker({
+    format: 'yyyy-mm-dd',
+    startDate: '-3d'
+	});
+});
+  ",View::POS_END,'editor');
+?>

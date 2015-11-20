@@ -100,4 +100,9 @@ class Country extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+    public function getOrgs() {
+        return $this->hasMany(Organization::className(), ['id' => 'org_id'])
+      ->viaTable('country_org_rel', ['country_id' => 'id']);
+    }
 }

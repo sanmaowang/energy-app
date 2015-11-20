@@ -52,12 +52,19 @@ use yii\widgets\ActiveForm;
 </div>
 
 <?php 
+$this->registerCssFile(Yii::$app->request->baseUrl.'/css/bootstrap-datepicker.min.css', [], 'css-datepicker');
 $this->registerCssFile(Yii::$app->request->baseUrl.'/js/redactor/redactor.css', [], 'css-redactor');
 $this->registerJsFile(Yii::$app->request->baseUrl.'/js/redactor/redactor.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::$app->request->baseUrl.'/js/bootstrap-datepicker.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJs("
 $(function(){
   $('#organization-description').redactor();
   $('#organization-english_description').redactor();
+  $('#organization-create_date').datepicker({
+    format: 'yyyy-mm-dd',
+    startDate: '-3d'
+})
+
 });
   ",View::POS_END,'editor');
 ?>

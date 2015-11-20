@@ -1,6 +1,8 @@
 <?php
 
 namespace app\models;
+use app\models\Country;
+use app\models\Organization;
 
 use Yii;
 
@@ -10,6 +12,8 @@ use Yii;
  * @property integer $id
  * @property integer $country_id
  * @property integer $org_id
+ * @property string $join_time
+ * @property string $exit_time
  */
 class CountryOrgRel extends \yii\db\ActiveRecord
 {
@@ -27,7 +31,9 @@ class CountryOrgRel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['country_id', 'org_id'], 'integer']
+            [['country_id', 'org_id'], 'integer'],
+            [['country_id', 'org_id'], 'required'],
+            [['country_id', 'org_id','join_time', 'exit_time'], 'safe']
         ];
     }
 
@@ -40,6 +46,18 @@ class CountryOrgRel extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'country_id' => Yii::t('app', 'Country ID'),
             'org_id' => Yii::t('app', 'Org ID'),
+            'join_time' => Yii::t('app', 'Join Time'),
+            'exit_time' => Yii::t('app', 'Exit Time'),
         ];
+    }
+
+    public function getOrganization()
+    {
+        return $this->hasOne(Organization::className(), ['id' => 'org_id']);
+    }
+
+    public function getCountry()
+    {
+        return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
 }
