@@ -13,19 +13,10 @@ use Yii;
  * @property string $code2l
  * @property string $code3l
  * @property string $name
- * @property string $english_name
+ * @property string $name_english
  * @property string $name_official
  * @property string $flag
  * @property integer $order
- * @property double $total_quantity_consumed
- * @property double $total_energy_consumed
- * @property double $petroleum_reserves
- * @property double $carbon_emission
- * @property double $renewable_energy
- * @property double $gdp
- * @property double $population
- * @property double $per_energy_consumed
- * @property double $per_carbon_emission
  * @property string $latitude
  * @property string $longitude
  * @property integer $created_at
@@ -48,11 +39,11 @@ class Country extends \yii\db\ActiveRecord
     {
         return [
             [['order', 'created_at', 'updated_at'], 'integer'],
-            [['total_quantity_consumed', 'total_energy_consumed', 'petroleum_reserves', 'carbon_emission', 'renewable_energy', 'gdp', 'population', 'per_energy_consumed', 'per_carbon_emission', 'latitude', 'longitude'], 'number'],
+            [['latitude', 'longitude'], 'number'],
             [['code2l'], 'string', 'max' => 2],
             [['code3l'], 'string', 'max' => 3],
             [['name', 'name_official'], 'string', 'max' => 128],
-            [['english_name'], 'string', 'max' => 64],
+            [['name_english'], 'string', 'max' => 64],
             [['flag'], 'string', 'max' => 255]
         ];
     }
@@ -67,19 +58,10 @@ class Country extends \yii\db\ActiveRecord
             'code2l' => Yii::t('app', 'Code2l'),
             'code3l' => Yii::t('app', 'Code3l'),
             'name' => Yii::t('app', 'Name'),
-            'english_name' => Yii::t('app', 'English Name'),
+            'name_english' => Yii::t('app', 'English Name'),
             'name_official' => Yii::t('app', 'Name Official'),
             'flag' => Yii::t('app', 'Flag'),
             'order' => Yii::t('app', 'Order'),
-            'total_quantity_consumed' => Yii::t('app', '消费总量'),
-            'total_energy_consumed' => Yii::t('app', '能源消费总量'),
-            'petroleum_reserves' => Yii::t('app', '油气储量'),
-            'carbon_emission' => Yii::t('app', '碳排放'),
-            'renewable_energy' => Yii::t('app', '可再生能源产量'),
-            'gdp' => Yii::t('app', 'GDP'),
-            'population' => Yii::t('app', '人口'),
-            'per_energy_consumed' => Yii::t('app', '人均能源消费量'),
-            'per_carbon_emission' => Yii::t('app', '人均碳排放量'),
             'latitude' => Yii::t('app', 'Latitude'),
             'longitude' => Yii::t('app', 'Longitude'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -104,5 +86,9 @@ class Country extends \yii\db\ActiveRecord
     public function getOrgs() {
         return $this->hasMany(Organization::className(), ['id' => 'org_id'])
       ->viaTable('country_org_rel', ['country_id' => 'id']);
+    }
+
+    public function getData() {
+        return $this->hasMany(CountryData::className(), ['country_id' => 'id']);    
     }
 }

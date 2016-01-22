@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -17,31 +16,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'create_date')->textInput() ?>
+    <?= $form->field($model, 'founding_year')->textInput() ?>
 
-    <?= $form->field($model, 'create_country')->textInput() ?>
+    <?= $form->field($model, 'initiating_country')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'total_quantity_consumed')->textInput() ?>
+    <?= $form->field($model, 'funding_model')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'total_energy_consumed')->textInput() ?>
+    <?= $form->field($model, 'top_funding_country')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'petroleum_reserves')->textInput() ?>
-
-    <?= $form->field($model, 'carbon_emission')->textInput() ?>
-
-    <?= $form->field($model, 'renewable_energy')->textInput() ?>
-
-    <?= $form->field($model, 'gdp')->textInput() ?>
-
-    <?= $form->field($model, 'population')->textInput() ?>
-
-    <?= $form->field($model, 'per_energy_consumed')->textInput() ?>
-
-    <?= $form->field($model, 'per_carbon_emission')->textInput() ?>
+    <?= $form->field($model, 'responsible_person')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'english_description')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'created_at')->textInput() ?>
+
+    <?= $form->field($model, 'updated_at')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -50,21 +41,3 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-
-<?php 
-$this->registerCssFile(Yii::$app->request->baseUrl.'/css/bootstrap-datepicker.min.css', [], 'css-datepicker');
-$this->registerCssFile(Yii::$app->request->baseUrl.'/js/redactor/redactor.css', [], 'css-redactor');
-$this->registerJsFile(Yii::$app->request->baseUrl.'/js/redactor/redactor.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJsFile(Yii::$app->request->baseUrl.'/js/bootstrap-datepicker.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJs("
-$(function(){
-  $('#organization-description').redactor();
-  $('#organization-english_description').redactor();
-  $('#organization-create_date').datepicker({
-    format: 'yyyy-mm-dd',
-    startDate: '-3d'
-})
-
-});
-  ",View::POS_END,'editor');
-?>

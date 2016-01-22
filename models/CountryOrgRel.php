@@ -12,6 +12,7 @@ use Yii;
  * @property integer $id
  * @property integer $country_id
  * @property integer $org_id
+ * @property string $type
  * @property string $join_time
  * @property string $exit_time
  */
@@ -33,7 +34,8 @@ class CountryOrgRel extends \yii\db\ActiveRecord
         return [
             [['country_id', 'org_id'], 'integer'],
             [['country_id', 'org_id'], 'required'],
-            [['country_id', 'org_id','join_time', 'exit_time'], 'safe']
+           [['join_time', 'exit_time'], 'safe'],
+           [['type'], 'string', 'max' => 5]
         ];
     }
 
@@ -46,6 +48,7 @@ class CountryOrgRel extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'country_id' => Yii::t('app', 'Country ID'),
             'org_id' => Yii::t('app', 'Org ID'),
+            'type' => Yii::t('app', 'Type'),
             'join_time' => Yii::t('app', 'Join Time'),
             'exit_time' => Yii::t('app', 'Exit Time'),
         ];

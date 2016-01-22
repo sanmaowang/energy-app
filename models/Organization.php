@@ -11,22 +11,17 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
+ * @property string $slug
  * @property string $english_name
- * @property string $create_date
- * @property integer $create_country
+ * @property string $founding_year
+ * @property string $initiating_country
+ * @property string $funding_model
+ * @property string $top_funding_country
+ * @property string $responsible_person
  * @property string $description
  * @property string $english_description
- * @property double $total_quantity_consumed
- * @property double $total_energy_consumed
- * @property double $petroleum_reserves
- * @property double $carbon_emission
- * @property double $renewable_energy
- * @property double $gdp
- * @property double $population
- * @property double $per_energy_consumed
- * @property double $per_carbon_emission
- * @property string $created_at
- * @property string $updated_at
+ * @property integer $created_at
+ * @property integer $updated_at
  */
 class Organization extends \yii\db\ActiveRecord
 {
@@ -44,10 +39,12 @@ class Organization extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['create_date', 'created_at', 'updated_at'], 'safe'],
-            [['description','create_country', 'english_description'], 'string'],
-            [['total_quantity_consumed', 'total_energy_consumed', 'petroleum_reserves', 'carbon_emission', 'renewable_energy', 'gdp', 'population', 'per_energy_consumed', 'per_carbon_emission'], 'number'],
-            [['name', 'english_name'], 'string', 'max' => 255]
+            [['slug','founding_year'], 'safe'],
+            [['description', 'english_description'], 'string'],
+            [['created_at', 'updated_at'], 'integer'],
+            [['name', 'english_name', 'responsible_person'], 'string', 'max' => 255],
+            [['initiating_country', 'funding_model'], 'string', 'max' => 80],
+            [['top_funding_country','founding_year'], 'string', 'max' => 25]
         ];
     }
 
@@ -58,23 +55,18 @@ class Organization extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', '名称'),
+            'name' => Yii::t('app', 'Name'),
+            'slug'=>Yii::t('app', '简称'),
             'english_name' => Yii::t('app', 'English Name'),
-            'create_date' => Yii::t('app', '发起时间'),
-            'create_country' => Yii::t('app', '发起国'),
-            'description' => Yii::t('app', '描述'),
+            'founding_year' => Yii::t('app', '成立时间'),
+            'initiating_country' => Yii::t('app', '发起国'),
+            'funding_model' => Yii::t('app', '成员国出资模式'),
+            'top_funding_country' => Yii::t('app', '最大出资国'),
+            'responsible_person' => Yii::t('app', '现任负责人'),
+            'description' => Yii::t('app', 'Description'),
             'english_description' => Yii::t('app', 'English Description'),
-            'total_quantity_consumed' => Yii::t('app', '消费总量'),
-            'total_energy_consumed' => Yii::t('app', '能源消费总量'),
-            'petroleum_reserves' => Yii::t('app', '油气储量'),
-            'carbon_emission' => Yii::t('app', '碳排放'),
-            'renewable_energy' => Yii::t('app', '可再生能源产量'),
-            'gdp' => Yii::t('app', 'GDP'),
-            'population' => Yii::t('app', '人口'),
-            'per_energy_consumed' => Yii::t('app', '人均能源消费量'),
-            'per_carbon_emission' => Yii::t('app', '人均碳排放量'),
-            'created_at' => Yii::t('app', 'Create Time'),
-            'updated_at' => Yii::t('app', 'Update Time'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 
@@ -92,9 +84,8 @@ class Organization extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCountries() {
+    public function getCountry() {
         return $this->hasMany(Country::className(), ['id' => 'country_id'])
       ->viaTable('country_org_rel', ['org_id' => 'id']);
     }
-
 }

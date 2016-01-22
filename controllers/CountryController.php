@@ -4,7 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Country;
-use app\models\FullCountry;
+use app\models\CountryData;
+use app\models\CountryDataMeta;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,12 +34,11 @@ class CountryController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Country::find(),
-        ]);
-
+        $model = Country::find()->all();
+        $keys = CountryDataMeta::find()->all();
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'keys' => $keys,
         ]);
     }
 
@@ -54,20 +54,46 @@ class CountryController extends Controller
         ]);
     }
 
+    public function actionViewdata($id,$type)
+    {
+        $model = $this->findModel($id);
+        $name = CountryDataMeta::find()->where(['indicator_code'=>$type])->one();
+        $name_cn = $name->indicator_name_cn; 
+        $data = CountryData::find()->where(['country_id'=>$id,'data_key'=>$type])->orderBy('data_version ASC')->all();
+
+        $dataArr = array();
+        $categories = array();
+
+        $dataArr['name'] = $model->name;
+
+        for($i = 0; $i < count($data); $i++) {
+            $categories[] = $data[$i]['data_version'];
+            $dataArr['data'][$i] = (float)$data[$i]['data_value'];
+        }
+
+        return $this->render('viewdata', [
+            'model' => $model,
+            'data' => json_encode($dataArr),
+            'categories' => json_encode($categories),
+            'name_cn'=>$name_cn,
+            'fulldata'=>$data
+        ]);
+    }
     /**
      * Creates a new Country model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Country();
-
+        $countrymodel = $this->findModel($id);
+        $model = new CountryData();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['create', 'id' => $countrymodel->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'countrymodel'=>$countrymodel
             ]);
         }
     }
